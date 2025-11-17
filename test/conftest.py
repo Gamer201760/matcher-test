@@ -1,8 +1,12 @@
 import os
+from random import randint
+from uuid import UUID, uuid4
 
 import grpc
+import names
 import pytest
 
+import gen.matcher.matcher_pb2 as pb2
 import gen.matcher.matcher_pb2_grpc as pb2_grpc
 
 
@@ -16,3 +20,27 @@ def grpc_channel() -> grpc.Channel:
 @pytest.fixture(scope='session')
 def form_service(grpc_channel: grpc.Channel) -> pb2_grpc.FormServiceStub:
     return pb2_grpc.FormServiceStub(grpc_channel)
+
+
+@pytest.fixture(scope='session')
+def rec_serivice(grpc_channel: grpc.Channel) -> pb2_grpc.FindGroupServiceStub:
+    return pb2_grpc.FindGroupServiceStub(grpc_channel)
+
+
+def create_form_with_user_id(user_id: UUID) -> pb2.CreateFormRequest:
+    params = pb2.Parameters(
+        name=names.get_first_name(),
+        surname=names.get_last_name(),
+        age=randint(17, 25),
+        budget=randint(12000, 60000),
+        roommates_count=randint(1, 5),
+        room_count=randint(1, 5),
+        month=randint(1, 12 * 10),
+        sex=pb2.Sex.SEX_MALE,
+        user_type=pb2.USER_TYPE_STUDENT,
+    )
+    return pb2.CreateFormRequest(user_id=str(user_id), parameters=params)
+
+
+def create_random_form() -> pb2.CreateFormRequest:
+    return create_form_with_user_id(uuid4())
