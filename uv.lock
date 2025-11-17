@@ -137,6 +137,7 @@ dependencies = [
     { name = "grpcio-tools" },
     { name = "grpclib" },
     { name = "mypy-protobuf" },
+    { name = "names" },
     { name = "pytest" },
     { name = "pytest-grpc" },
     { name = "python-dotenv" },
@@ -156,6 +157,7 @@ requires-dist = [
     { name = "grpcio-tools", specifier = ">=1.75.1" },
     { name = "grpclib", specifier = ">=0.4.8" },
     { name = "mypy-protobuf", specifier = ">=3.6.0" },
+    { name = "names", specifier = ">=0.3.0" },
     { name = "pytest", specifier = ">=9.0.1" },
     { name = "pytest-grpc", specifier = ">=0.8.0" },
     { name = "python-dotenv", specifier = ">=1.1.1" },
@@ -297,6 +299,12 @@ sdist = { url = "https://files.pythonhosted.org/packages/4d/6f/282d64d66bf48ce60
 wheels = [
     { url = "https://files.pythonhosted.org/packages/e8/73/d6b999782ae22f16971cc05378b3b33f6a89ede3b9619e8366aa23484bca/mypy_protobuf-3.6.0-py3-none-any.whl", hash = "sha256:56176e4d569070e7350ea620262478b49b7efceba4103d468448f1d21492fd6c", size = 16434, upload-time = "2024-04-01T20:24:40.583Z" },
 ]
+
+[[package]]
+name = "names"
+version = "0.3.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/44/4e/f9cb7ef2df0250f4ba3334fbdabaa94f9c88097089763d8e85ada8092f84/names-0.3.0.tar.gz", hash = "sha256:726e46254f2ed03f1ffb5d941dae3bc67c35123941c29becd02d48d0caa2a671", size = 789099, upload-time = "2013-05-14T14:55:49.073Z" }
 
 [[package]]
 name = "packaging"

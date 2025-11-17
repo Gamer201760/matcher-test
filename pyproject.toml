@@ -13,6 +13,7 @@ dependencies = [
     "pytest-grpc>=0.8.0",
     "pytest>=9.0.1",
     "mypy-protobuf>=3.6.0",
+    "names>=0.3.0",
 ]
 
 [dependency-groups]
