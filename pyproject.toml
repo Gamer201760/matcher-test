@@ -1,14 +1,74 @@
 [project]
-name = "matcher-test"
+name = "matcher"
 version = "0.1.0"
-description = "Add your description here"
+description = "users & group recomendation service"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
-    "grpcio>=1.76.0",
-    "grpcio-tools>=1.76.0",
+    "grpcio>=1.75.1",
+    "grpcio-reflection>=1.75.1",
+    "grpclib>=0.4.8",
+    "neo4j>=6.0.2",
+    "numpy>=2.3.4",
+    "python-dotenv>=1.1.1",
+    "questionary>=2.1.1",
+    "rich>=14.2.0",
+    "scipy>=1.16.2",
+    "grpcio-tools>=1.75.1",
+    "types-grpcio>=1.0.0.20251001",
+]
+
+[dependency-groups]
+dev = [
     "mypy>=1.18.2",
     "mypy-protobuf>=3.6.0",
-    "pytest>=9.0.1",
-    "pytest-grpc>=0.8.0",
+    "pytest>=8.4.2",
+    "ruff>=0.13.3",
 ]
+
+[tool.pytest.ini_options]
+log_cli = true
+log_cli_level = "INFO"
+
+[tool.ruff]
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".ipynb_checkpoints",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pyenv",
+    ".pytest_cache",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    ".vscode",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "site-packages",
+    "venv",
+    "gen",
+]
+
+
+[tool.ruff.lint]
+select = ["F", "N", "I", "E", "W", "PL"]
+ignore = ["W191", "E501", "PLR2004", "PLR0913"]
+[tool.ruff.lint.extend-per-file-ignores]
+"adapter/grpc/**/*.py" = ["N802"]
+
+[tool.ruff.format]
+exclude = ["list"]
+quote-style = "single"
+
