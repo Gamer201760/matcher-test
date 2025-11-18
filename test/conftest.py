@@ -27,6 +27,11 @@ def rec_serivice(grpc_channel: grpc.Channel) -> pb2_grpc.FindGroupServiceStub:
     return pb2_grpc.FindGroupServiceStub(grpc_channel)
 
 
+@pytest.fixture(scope='session')
+def req_serivice(grpc_channel: grpc.Channel) -> pb2_grpc.GroupServiceStub:
+    return pb2_grpc.GroupServiceStub(grpc_channel)
+
+
 def gen_random_parameters() -> pb2.Parameters:
     return pb2.Parameters(
         name=names.get_first_name(),
