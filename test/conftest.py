@@ -23,6 +23,11 @@ def form_service(grpc_channel: grpc.Channel) -> pb2_grpc.FormServiceStub:
 
 
 @pytest.fixture(scope='session')
+def group_service(grpc_channel: grpc.Channel) -> pb2_grpc.GroupQueryServiceStub:
+    return pb2_grpc.GroupQueryServiceStub(grpc_channel)
+
+
+@pytest.fixture(scope='session')
 def rec_serivice(grpc_channel: grpc.Channel) -> pb2_grpc.FindGroupServiceStub:
     return pb2_grpc.FindGroupServiceStub(grpc_channel)
 

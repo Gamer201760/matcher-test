@@ -17,6 +17,11 @@ def test_create_form(form_service: pb2_grpc.FormServiceStub):
     form_service.CreateForm(request)
 
 
+def test_group_by_user(form_service: pb2_grpc.FormServiceStub):
+    request = create_form_with_user_id(uuid4())
+    form_service.CreateForm(request)
+
+
 def test_get_form(form_service: pb2_grpc.FormServiceStub):
     id = uuid4()
     form_req = create_form_with_user_id(id)
