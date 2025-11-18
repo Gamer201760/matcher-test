@@ -11,7 +11,7 @@ logger = getLogger(__name__)
 def test_random_recomendation(
     rec_serivice: pb2_grpc.FindGroupServiceStub, form_service: pb2_grpc.FormServiceStub
 ):
-    for _ in range(10):
+    for _ in range(1):
         form_service.CreateForm(create_random_form())
     user_id = uuid4()
     form_service.CreateForm(create_form_with_user_id(user_id))

@@ -27,8 +27,8 @@ def rec_serivice(grpc_channel: grpc.Channel) -> pb2_grpc.FindGroupServiceStub:
     return pb2_grpc.FindGroupServiceStub(grpc_channel)
 
 
-def create_form_with_user_id(user_id: UUID) -> pb2.CreateFormRequest:
-    params = pb2.Parameters(
+def gen_random_parameters() -> pb2.Parameters:
+    return pb2.Parameters(
         name=names.get_first_name(),
         surname=names.get_last_name(),
         age=randint(17, 25),
@@ -39,7 +39,12 @@ def create_form_with_user_id(user_id: UUID) -> pb2.CreateFormRequest:
         sex=pb2.Sex.SEX_MALE,
         user_type=pb2.USER_TYPE_STUDENT,
     )
-    return pb2.CreateFormRequest(user_id=str(user_id), parameters=params)
+
+
+def create_form_with_user_id(user_id: UUID) -> pb2.CreateFormRequest:
+    return pb2.CreateFormRequest(
+        user_id=str(user_id), parameters=gen_random_parameters()
+    )
 
 
 def create_random_form() -> pb2.CreateFormRequest:
