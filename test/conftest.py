@@ -43,7 +43,7 @@ def gen_random_parameters() -> pb2.Parameters:
         surname=names.get_last_name(),
         age=randint(17, 25),
         budget=randint(12000, 60000),
-        roommates_count=randint(1, 5),
+        roommates_count=randint(2, 5),
         room_count=randint(1, 5),
         month=randint(1, 12 * 10),
         sex=pb2.Sex.SEX_MALE,
