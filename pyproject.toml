@@ -25,7 +25,7 @@ dev = [
 
 [tool.pytest.ini_options]
 log_cli = true
-log_cli_level = "debug"
+log_cli_level = "error"
 
 [tool.ruff]
 exclude = [
