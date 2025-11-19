@@ -59,11 +59,11 @@ def test_get_all_request(
     logger.debug(f'send request to group {group.id}')
     logger.debug(resp)
 
-    request = pb2.GetReqeustsRequest(
+    request = pb2.GetRequestsRequest(
         group_id=group.id,
     )
-    resp = req_serivice.GetReqeusts(request)
-    assert isinstance(resp, pb2.GetReqeustsResponse)
+    resp = req_serivice.GetRequests(request)
+    assert isinstance(resp, pb2.GetRequestsResponse)
     logger.debug(resp)
     assert len(resp.requests) == 1
 
@@ -95,12 +95,12 @@ def test_accept_join_request(
     logger.debug(f'send request to group {group.id}')
     logger.debug(resp)
 
-    resp = req_serivice.GetReqeusts(
-        pb2.GetReqeustsRequest(
+    resp = req_serivice.GetRequests(
+        pb2.GetRequestsRequest(
             group_id=group.id,
         )
     )
-    assert isinstance(resp, pb2.GetReqeustsResponse)
+    assert isinstance(resp, pb2.GetRequestsResponse)
     logger.debug(resp)
     assert len(resp.requests) == 1
 
@@ -110,12 +110,12 @@ def test_accept_join_request(
     )
     req_serivice.AcceptJoinRequest(request)
 
-    resp = req_serivice.GetReqeusts(
-        pb2.GetReqeustsRequest(
+    resp = req_serivice.GetRequests(
+        pb2.GetRequestsRequest(
             group_id=group.id,
         )
     )
-    assert isinstance(resp, pb2.GetReqeustsResponse)
+    assert isinstance(resp, pb2.GetRequestsResponse)
     logger.debug(resp)
     assert len(resp.requests) == 0
 
@@ -152,11 +152,11 @@ def test_reject_join_request(
     logger.debug(f'send request to group {group.id}')
     logger.debug(resp)
 
-    request = pb2.GetReqeustsRequest(
+    request = pb2.GetRequestsRequest(
         group_id=group.id,
     )
-    resp = req_serivice.GetReqeusts(request)
-    assert isinstance(resp, pb2.GetReqeustsResponse)
+    resp = req_serivice.GetRequests(request)
+    assert isinstance(resp, pb2.GetRequestsResponse)
     logger.debug(resp)
     assert len(resp.requests) == 1
 
@@ -166,11 +166,11 @@ def test_reject_join_request(
     )
     req_serivice.RejectJoinRequest(request)
 
-    request = pb2.GetReqeustsRequest(
+    request = pb2.GetRequestsRequest(
         group_id=group.id,
     )
-    resp = req_serivice.GetReqeusts(request)
-    assert isinstance(resp, pb2.GetReqeustsResponse)
+    resp = req_serivice.GetRequests(request)
+    assert isinstance(resp, pb2.GetRequestsResponse)
     logger.debug(resp)
     assert len(resp.requests) == 0
 

@@ -49,6 +49,7 @@ def gen_random_parameters() -> pb2.Parameters:
         sex=pb2.Sex.SEX_MALE,
         user_type=pb2.USER_TYPE_STUDENT,
         geo=pb2.Point(),
+        address='lox',
     )
 
 
