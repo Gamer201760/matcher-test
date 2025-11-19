@@ -56,7 +56,7 @@ def test_delete_form(form_service: pb2_grpc.FormServiceStub):
     assert e.value.code() == grpc.StatusCode.NOT_FOUND
 
 
-@pytest.mark.skip(reason='жду когда пофиксят upsert users')
+# @pytest.mark.skip(reason='жду когда пофиксят upsert users')
 def test_update_form(form_service: pb2_grpc.FormServiceStub):
     id = uuid4()
     form_req = create_form_with_user_id(id)
@@ -73,3 +73,11 @@ def test_update_form(form_service: pb2_grpc.FormServiceStub):
 
     new_resp = form_service.GetFormByUser(pb2.GetFormByUserRequest(user_id=str(id)))
     logger.debug(new_resp)
+    assert isinstance(last_resp, pb2.Form)
+    assert isinstance(new_resp, pb2.Form)
+
+    assert last_resp.id == new_resp.id
+    assert last_resp.user_id == new_resp.user_id
+    assert new_params == new_resp.parameters
+
+    form_service.DeleteForm(pb2.DeleteFormRequest(user_id=str(id)))
