@@ -18,4 +18,4 @@ def test_random_recomendation(
     req = pb2.FindGroupsRequest(user_id=str(user_id))
     resp = rec_serivice.FindGroups(req)
     assert isinstance(resp, pb2.FindGroupsResponse)
-    logger.info(resp)
+    logger.debug(resp)

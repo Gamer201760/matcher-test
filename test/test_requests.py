@@ -124,6 +124,8 @@ def test_accept_join_request(
     )
     assert isinstance(resp, pb2.ListGroupMembersResponse)
     logger.debug(resp)
+    for member in resp.members:
+        assert member.user_id in [str(owner_id), str(user_id)]
 
 
 def test_reject_join_request(
