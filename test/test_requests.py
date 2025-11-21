@@ -92,7 +92,7 @@ def test_accept_join_request(
         group_id=group.id,
     )
     resp = req_serivice.SendJoinRequest(request)
-    logger.debug(f'send request to group {group.id}')
+    logger.debug(f'send request to group:\n{group}')
     logger.debug(resp)
 
     resp = req_serivice.GetRequests(
@@ -126,6 +126,12 @@ def test_accept_join_request(
     logger.debug(resp)
     for member in resp.members:
         assert member.user_id in [str(owner_id), str(user_id)]
+
+    fin_group = group_service.GetGroup(pb2.GetGroupRequest(group_id=group.id))
+    assert isinstance(fin_group, pb2.Group)
+    logger.debug(f'Final group:\n{fin_group}')
+    assert fin_group.id == group.id
+    assert fin_group.owner_id == group.owner_id
 
 
 def test_reject_join_request(

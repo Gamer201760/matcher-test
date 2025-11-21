@@ -1,5 +1,5 @@
 import os
-from random import randint
+from random import randint, random
 from uuid import UUID, uuid4
 
 import grpc
@@ -48,8 +48,8 @@ def gen_random_parameters() -> pb2.Parameters:
         month=randint(1, 12 * 10),
         sex=pb2.Sex.SEX_MALE,
         user_type=pb2.USER_TYPE_STUDENT,
-        geo=pb2.Point(),
-        address='lox',
+        geo=pb2.Point(lat=random() * 100, lon=random() * 100),
+        address='test',
     )
 
 
