@@ -15,6 +15,11 @@ def test_random_recomendation(
         form_service.CreateForm(create_random_form())
     user_id = uuid4()
     form_service.CreateForm(create_form_with_user_id(user_id))
+    last_resp = form_service.GetFormByUser(
+        pb2.GetFormByUserRequest(user_id=str(user_id))
+    )
+    logger.debug(f'User params {last_resp}')
+
     req = pb2.FindGroupsRequest(user_id=str(user_id))
     resp = rec_serivice.FindGroups(req)
     assert isinstance(resp, pb2.FindGroupsResponse)
