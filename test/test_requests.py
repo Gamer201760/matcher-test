@@ -133,6 +133,9 @@ def test_accept_join_request(
     assert fin_group.id == group.id
     assert fin_group.owner_id == group.owner_id
 
+    form_service.DeleteForm(pb2.DeleteFormRequest(user_id=str(owner_id)))
+    form_service.DeleteForm(pb2.DeleteFormRequest(user_id=str(user_id)))
+
 
 def test_reject_join_request(
     req_serivice: pb2_grpc.GroupServiceStub,

@@ -112,6 +112,14 @@ def test_leave_group(
     logger.debug(resp)
     for member in resp.members:
         assert member.user_id in [str(owner_id)]
+    new_group = group_service.GetGroupByUser(
+        pb2.GetGroupByUserRequest(user_id=str(user_id))
+    )
+    assert isinstance(new_group, pb2.Group)
+    logger.debug(f'New user group: {new_group}')
+
+    form_service.DeleteForm(pb2.DeleteFormRequest(user_id=str(owner_id)))
+    form_service.DeleteForm(pb2.DeleteFormRequest(user_id=str(user_id)))
 
 
 def test_kick_group(
@@ -186,3 +194,156 @@ def test_kick_group(
     logger.debug(resp)
     for member in resp.members:
         assert member.user_id in [str(owner_id)]
+
+    new_group = group_service.GetGroupByUser(
+        pb2.GetGroupByUserRequest(user_id=str(user_id))
+    )
+    assert isinstance(new_group, pb2.Group)
+    logger.debug(f'New user group: {new_group}')
+
+    form_service.DeleteForm(pb2.DeleteFormRequest(user_id=str(owner_id)))
+    form_service.DeleteForm(pb2.DeleteFormRequest(user_id=str(user_id)))
+
+
+def test_kick_group_owner(
+    group_service: pb2_grpc.GroupQueryServiceStub,
+    form_service: pb2_grpc.FormServiceStub,
+    req_serivice: pb2_grpc.GroupServiceStub,
+):
+    user_id = uuid4()
+    owner_id = uuid4()
+
+    form_service.CreateForm(create_form_with_user_id(owner_id))
+    form_service.CreateForm(create_form_with_user_id(user_id))
+
+    group = group_service.GetGroupByUser(
+        pb2.GetGroupByUserRequest(user_id=str(owner_id))
+    )
+    assert isinstance(group, pb2.Group)
+
+    request = pb2.SendJoinRequestRequest(
+        user_id=str(user_id),
+        group_id=group.id,
+    )
+    resp = req_serivice.SendJoinRequest(request)
+    logger.debug(f'send request to group:\n{group}')
+    logger.debug(resp)
+
+    resp = req_serivice.GetRequests(
+        pb2.GetRequestsRequest(
+            group_id=group.id,
+        )
+    )
+    assert isinstance(resp, pb2.GetRequestsResponse)
+    logger.debug(resp)
+    assert len(resp.requests) == 1
+
+    request = pb2.AcceptJoinRequestRequest(
+        owner_id=str(owner_id),
+        request_id=resp.requests[0].id,
+    )
+    req_serivice.AcceptJoinRequest(request)
+
+    resp = req_serivice.GetRequests(
+        pb2.GetRequestsRequest(
+            group_id=group.id,
+        )
+    )
+    assert isinstance(resp, pb2.GetRequestsResponse)
+    logger.debug(resp)
+    assert len(resp.requests) == 0
+
+    resp = group_service.ListGroupMembers(
+        pb2.ListGroupMembersRequest(group_id=group.id)
+    )
+    assert isinstance(resp, pb2.ListGroupMembersResponse)
+    logger.debug(resp)
+    for member in resp.members:
+        assert member.user_id in [str(owner_id), str(user_id)]
+
+    fin_group = group_service.GetGroup(pb2.GetGroupRequest(group_id=group.id))
+    assert isinstance(fin_group, pb2.Group)
+    logger.debug(f'Final group:\n{fin_group}')
+    assert fin_group.id == group.id
+    assert fin_group.owner_id == group.owner_id
+
+    with pytest.raises(grpc.RpcError) as e:
+        group_service.KickGroup(
+            pb2.KickGroupRequest(user_id=str(owner_id), owner_id=str(owner_id))
+        )
+    assert 'Вы не можете выгнать самого себя' in (e.value.details() or '')
+
+    form_service.DeleteForm(pb2.DeleteFormRequest(user_id=str(owner_id)))
+    form_service.DeleteForm(pb2.DeleteFormRequest(user_id=str(user_id)))
+
+
+def test_kick_group_not_permission(
+    group_service: pb2_grpc.GroupQueryServiceStub,
+    form_service: pb2_grpc.FormServiceStub,
+    req_serivice: pb2_grpc.GroupServiceStub,
+):
+    user_id = uuid4()
+    owner_id = uuid4()
+
+    form_service.CreateForm(create_form_with_user_id(owner_id))
+    form_service.CreateForm(create_form_with_user_id(user_id))
+
+    group = group_service.GetGroupByUser(
+        pb2.GetGroupByUserRequest(user_id=str(owner_id))
+    )
+    assert isinstance(group, pb2.Group)
+
+    request = pb2.SendJoinRequestRequest(
+        user_id=str(user_id),
+        group_id=group.id,
+    )
+    resp = req_serivice.SendJoinRequest(request)
+    logger.debug(f'send request to group:\n{group}')
+    logger.debug(resp)
+
+    resp = req_serivice.GetRequests(
+        pb2.GetRequestsRequest(
+            group_id=group.id,
+        )
+    )
+    assert isinstance(resp, pb2.GetRequestsResponse)
+    logger.debug(resp)
+    assert len(resp.requests) == 1
+
+    request = pb2.AcceptJoinRequestRequest(
+        owner_id=str(owner_id),
+        request_id=resp.requests[0].id,
+    )
+    req_serivice.AcceptJoinRequest(request)
+
+    resp = req_serivice.GetRequests(
+        pb2.GetRequestsRequest(
+            group_id=group.id,
+        )
+    )
+    assert isinstance(resp, pb2.GetRequestsResponse)
+    logger.debug(resp)
+    assert len(resp.requests) == 0
+
+    resp = group_service.ListGroupMembers(
+        pb2.ListGroupMembersRequest(group_id=group.id)
+    )
+    assert isinstance(resp, pb2.ListGroupMembersResponse)
+    logger.debug(resp)
+    for member in resp.members:
+        assert member.user_id in [str(owner_id), str(user_id)]
+
+    fin_group = group_service.GetGroup(pb2.GetGroupRequest(group_id=group.id))
+    assert isinstance(fin_group, pb2.Group)
+    logger.debug(f'Final group:\n{fin_group}')
+    assert fin_group.id == group.id
+    assert fin_group.owner_id == group.owner_id
+
+    with pytest.raises(grpc.RpcError) as e:
+        group_service.KickGroup(
+            pb2.KickGroupRequest(user_id=str(owner_id), owner_id=str(user_id))
+        )
+    assert 'У вас нет прав выгнать человека из группы' in (e.value.details() or '')
+
+    form_service.DeleteForm(pb2.DeleteFormRequest(user_id=str(owner_id)))
+    form_service.DeleteForm(pb2.DeleteFormRequest(user_id=str(user_id)))

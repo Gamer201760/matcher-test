@@ -18,7 +18,7 @@ make run:
 	uv run main.py
 
 test:
-	uv run pytest -v
+	uv run pytest ./test/ --log-cli-level=INFO
 
 lint:
 	uv run ruff check .
