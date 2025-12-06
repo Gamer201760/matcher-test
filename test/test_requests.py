@@ -25,7 +25,7 @@ def test_join_request(
     assert isinstance(group, pb2.Group)
 
     request = pb2.SendJoinRequestRequest(
-        user_id=str(owner_id),
+        user_id=str(user_id),
         group_id=group.id,
     )
     resp = req_serivice.SendJoinRequest(request)
@@ -52,7 +52,7 @@ def test_get_all_request(
     assert isinstance(group, pb2.Group)
 
     request = pb2.SendJoinRequestRequest(
-        user_id=str(owner_id),
+        user_id=str(user_id),
         group_id=group.id,
     )
     resp = req_serivice.SendJoinRequest(request)
@@ -154,7 +154,7 @@ def test_reject_join_request(
     assert isinstance(group, pb2.Group)
 
     request = pb2.SendJoinRequestRequest(
-        user_id=str(owner_id),
+        user_id=str(user_id),
         group_id=group.id,
     )
     resp = req_serivice.SendJoinRequest(request)
