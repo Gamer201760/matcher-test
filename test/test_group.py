@@ -23,7 +23,7 @@ def test_get_group_by_user(
     assert isinstance(resp, pb2.Group)
     logger.debug(resp)
 
-    form_service.DeleteForm(pb2.DeleteFormRequest(user_id=str(id)))
+    # form_service.DeleteForm(pb2.DeleteFormRequest(user_id=str(id)))
 
 
 def test_leave_group_once(

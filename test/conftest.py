@@ -12,7 +12,7 @@ import gen.matcher.matcher_pb2_grpc as pb2_grpc
 
 @pytest.fixture(scope='session')
 def grpc_channel() -> grpc.Channel:
-    target = os.getenv('GRPC_TARGET', 'localhost:50051')
+    target = os.getenv('GRPC_TARGET', '192.168.1.139:50051')
 
     return grpc.insecure_channel(target)
 
